@@ -1,61 +1,65 @@
-export enum Status {
-    Active = 1,
-    Inactive = 0
-}
+const Enum  = {
 
-export enum IsDeleted {
-    Deleted = 0,
-    NotDeleted = 1
-}
+    STATUS: {
+        ACTIVE: 1,
+        INACTIVE: 0
+    },
 
-export enum AccountVerified {
-    Yes = 1,
-    No = 0
-}
+    IS_DELETED: {
+        DELETED: 0,
+        NOT_DELETED: 1
+    },
 
-export enum IsRequired {
-    Yes = 1,
-    No = 0
-}
+    ACCOUNT_VERIFIED: {
+        YES: 1,
+        NO: 0
+    },
 
-export enum LeaveStatus {
-    Approved = 1,
-    Rejected = 2,
-    Pending = 0,
-}
+    IS_REQUIRED: {
+        YES: 1,
+        NO: 0
+    },
+    LEAVE_STATUS: {
+        APPROVED: 1,
+        REJECTED: 2,
+        PENDING: 0,
+    },
 
-export enum UserStatus {
-    Active = 1,
-    Banned = 0
-}
+    USER_STATUS: {
+        ACTIVE: 1,
+        BANNED: 0
+    },
+    // ACCOUNT_VERIFIED_STATUS: {
+    //     PENDING: 0,
+    //     VERIFIED: 1,
+    //     REJECTED: 2
+    // },
 
-export enum AccountVerifiedStatus {
-    Pending = 0,
-    Verified = 1,
-    Rejected = 2
-}
+    STEP_VERIFIED_STATUS: {
+        SUCCESS: 1,
+        PENDING: 0
+    },
 
-export enum StepVerifiedStatus {
-    Success = 1,
-    Pending = 0
-}
+    STEP_STATUS: {
+        ACTIVE: 1,
+        INACTIVE: 0
+    },
 
-export enum StepStatus {
-    Active = 1,
-    Inactive = 0
-}
 
-export enum LeaveType {
-    Vacation = 1,
-    Personal = 2
-}
+    LEAVE_TYPE: {
+        VACATION: 1,
+        PERSONAL: 2
+    },
 
-export enum AppointmentStatus {
-    Upcoming = 6,
-    Ongoing = 5,
-    Completed = 4,
-    Cancelled = 3,
-    Rejected = 2,
-    Pending = 0,
-    Accepted = 1
+
+    // APPOINTMENT_STATUS: {
+    //     UPCOMING: 6,
+    //     ONGOING: 5,
+    //     COMPLETED: 4,
+    //     CANCELLED: 3,
+    //     REJECTED: 2,
+    //     PENDING: 0,
+    //     ACCEPTED: 1
+    // }
 }
+export default Enum

@@ -3,13 +3,9 @@ import mongoose from 'mongoose';
 import path from 'path';
 import config from '../dating/config/dev.json'
 import appStrings from "../dating/src/components/utils/appString";
-// const adminIndex = require("../dating/src/components/admin/index")
-// const doctorIndex = require("../dating/src/components/doctor/index")
-// const patientIndex = require("../dating/src/components/patient/index")
-const http = require("http")
+import userIndex from "../dating/src/components/user/index"
 const app: Application = express();
 const port: number | string = config.PORT;
-
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'components', 'user', 'views'));
@@ -18,11 +14,7 @@ console.log('======== SERVER FILE LOADED=========');
 app.use(express.json());
 
 // Routes
-// app.use('/api/admin', adminIndex);
-// app.use('/api/doctor', doctorIndex);
-// app.use('/api/patient', patientIndex);
-
-
+app.use('/api/user', userIndex);
 
 const connectDb = async () => {
     try {

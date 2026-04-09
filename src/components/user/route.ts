@@ -1,70 +1,53 @@
-const adminController = require("../admin/controller/adminController")
-const stepController = require("./controller/settingController")
-const adminProfileController = require("./controller/adminProfileController")
-const adminLeaveController = require("../admin/controller/adminLeaveController")
-const adminValidation = require("./validation");
+import userController from '../user/controller/userController'
+import StepController from '../user/controller/settingController'
 
-module.exports = [
+const routeArray = [
 
 
-  //============= admin =============//
+  //============= user =============//
   {
-    path: "/registerAdmin",
+    path: "/registerUser",
     method: "post",
-    controller: adminController.registerAdmin,
+    controller: userController.register,
     isPublic: true,
-    validation: adminValidation.registerValidation
+
+  },
+   {
+    path: "/loginUser",
+    method: "post",
+    controller: userController.userLogin,
+    isPublic: true,
+
   },
 
    {
-    path: "/loginAdmin",
+    path: "/verifyOtp",
     method: "post",
-    controller: adminController.adminLogin,
-    isPublic: true,
-    validation: adminValidation.loginValidation
-  },
+    controller: userController.verifyEmailOtp,
 
-  {
-    path: "/approveDoctor",
-    method: "post",
-    controller: adminProfileController.approveDoctor,
-    validation: adminValidation.approveDoctorValidation
-  },
-  
-  {
-    path: "/doctorProfile/:id",
-    method: "get",
-    controller: adminProfileController.getDoctorProfile,
   },
 
    {
-    path: "/loginAdmin",
+    path: "/forgotPassword",
     method: "post",
-    controller: adminController.adminLogin,
-    isPublic: true,
-    validation: adminValidation.loginValidation
+    controller: userController.fotgotPassword,
   },
 
-
-  //================steps===================//
-
-  {
-    path: "/createStep",
+     {
+    path: "/resetPassword",
     method: "post",
-    controller: stepController.createStep,
-    validation: adminValidation.createStepValidation
+    controller: userController.resetPassword,
   },
 
-  //========= Admin Leave Management ========//
-  {
-      path: "/getleaves",
-      method: "get",
-      controller: adminLeaveController.getAllLeaves,
+
+
+  //===== steps create (setting Controller)
+
+      {
+    path: "/createSteps",
+    method: "post",
+    controller: StepController.createStep,
   },
-  {
-      path: "/leaves/:id/status",
-      method: "put",
-      controller: adminLeaveController.updateLeaveStatus,
-      validation: adminValidation.updateLeaveStatusValidation
-  }
+
 ]
+export default routeArray

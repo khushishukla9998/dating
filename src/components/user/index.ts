@@ -1,10 +1,13 @@
-const express = require("express");
+
+
+import express from "express";
 const routes = express.Router();
-const routeArray = require("./route");
-const commonUtils = require("../utils/commonUtils")
+import routeArray from "./route";
+import commonUtils from "../utils/commonUtils"
 
 
-commonUtils.routeArray(routeArray, routes ,true);
+commonUtils.routeArray(routeArray, routes );
+
+export default  routes
 
 
-module.exports = routes

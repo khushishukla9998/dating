@@ -21,4 +21,5 @@ const sendVerificationEmail = async (email:String, emailOtp:Number) => {
   });
 };
 
-module.exports = sendVerificationEmail;
+
+export default sendVerificationEmail;

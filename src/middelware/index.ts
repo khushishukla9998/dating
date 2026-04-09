@@ -1,14 +1,13 @@
-
-const commonUtils = require("../components/utils/commonUtils");
-const appStrings = require("../components/utils/appString");
-const config = require("../../config/dev.json");
-const redisClient = require("../components/utils/redisClient");
+import commonUtils from '../components/utils/commonUtils';
+import appStrings from "../components/utils/appString";
+import config from "../../config/dev.json";
+// import redisClient from "../components/utils/redisClient";
 // const User = require("../components/user/model/userModel");
-const ENUM = require("../components/utils/enum");
-const appString = require("../components/utils/appString");
+import ENUM from "../components/utils/enum";
+import appString from "../components/utils/appString";
 
 import { Request, Response, NextFunction } from 'express';
-import jwt, { TokenExpiredError, JsonWebTokenError } from 'jsonwebtoken';
+import jwt, { TokenExpiredError, JsonWebTokenError,SignOptions } from 'jsonwebtoken';
 
 
 // Define interface for the decoded JWT payload
@@ -32,21 +31,23 @@ declare global {
         }
     }
 }
+const REFRESH_SECRET = config.REFRESH_TOKEN_SECRET as string;
+const REFRESH_TIME = config.REFRESH_TOKEN_TIME as string | number;
 
 
 // Access token function
-export function generateAccessToken(payload: object): string {
-    return jwt.sign(payload, config.ACCESS_TOKEN_SECRET, {
-        expiresIn: config.ACCESS_TOKEN_TIME,
-    });
+export function generateAccessToken(payload:any,expiresIn:any=config.REFRESH_TOKEN_TIME) {
+    return jwt.sign(payload, config.ACCESS_TOKEN_SECRET,{expiresIn});
 }
 
 // Refresh token function
-export function generateRefreshToken(payload: object): string {
+export function generateRefreshToken(payload:any,expiresIn:any=config.REFRESH_TOKEN_TIME) {
     return jwt.sign(payload, config.REFRESH_TOKEN_SECRET, {
-        expiresIn: config.REFRESH_TOKEN_TIME,
+        expiresIn
     });
+ 
 }
+
 
 // Verify accessToken
 export async function verifyAcessToken(req: Request, res: Response, next: NextFunction) {
@@ -54,7 +55,7 @@ export async function verifyAcessToken(req: Request, res: Response, next: NextFu
         console.log("verify acess token");
         // Using optional chaining to safely access cookies/headers
         let token = req.headers.authorization?.split(' ')[1] || req.cookies?.accessToken;
-        console.log(token);
+        console.log("token==========",token);
 
         if (!token) {
             return commonUtils.sendErrorResponse(req, res, appStrings.TOKEN_NOT_PROVIDED, null, 401);
@@ -62,7 +63,7 @@ export async function verifyAcessToken(req: Request, res: Response, next: NextFu
 
         console.log("decode");
         const decode = jwt.verify(token, config.ACCESS_TOKEN_SECRET) as UserPayload;
-        console.log("decode:", decode);
+        console.log("decode:===================", decode);
 
         req.accessToken = token;
         req.refreshToken = req.cookies?.refreshToken;
@@ -72,12 +73,12 @@ export async function verifyAcessToken(req: Request, res: Response, next: NextFu
         req.user = decode;
 
         // Check if token exists in Redis for this user
-        const redisKey = `user:access:${decode.id}`;
-        const tokenInRedis = await redisClient.get(redisKey);
+        // const redisKey = `user:access:${decode.id}`;
+        // const tokenInRedis = await redisClient.get(redisKey);
 
-        if (!tokenInRedis || tokenInRedis !== token) {
-            return commonUtils.sendErrorResponse(req, res, appStrings.INVALID_TOKEN_IN_REDISH, null, 401);
-        }
+        // if (!tokenInRedis || tokenInRedis !== token) {
+        //     return commonUtils.sendErrorResponse(req, res, appStrings.INVALID_TOKEN_IN_REDISH, null, 401);
+        // }
 
         next();
     } catch (err: any) {
