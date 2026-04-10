@@ -158,7 +158,6 @@ const register = async (req: Request, res: Response) => {
     }
 };
 
-
 //============================ LOGIN  ==========================================//
 // ------------------ user can login wit mobile/email ------------------
 

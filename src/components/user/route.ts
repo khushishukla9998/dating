@@ -1,5 +1,6 @@
 import userController from '../user/controller/userController'
-import StepController from '../user/controller/settingController'
+import SettingController from '../user/controller/settingController'
+import  StepController from '../user/controller/stepController'
 
 const routeArray = [
 
@@ -46,8 +47,14 @@ const routeArray = [
       {
     path: "/createSteps",
     method: "post",
-    controller: StepController.createStep,
+    controller: SettingController.createStep,
   },
 
+
+   {
+    path: "/fillSteps",
+    method: "post",
+    controller: StepController.fillStep,
+  },
 ]
 export default routeArray
