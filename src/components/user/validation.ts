@@ -12,7 +12,7 @@ const stepValidation = (req: Request, res: Response, next: any) => {
     } else if (typeof req.body.stepData === 'string') {
         try {
             req.body.stepData = JSON.parse(req.body.stepData);
-        } catch (e) {}
+        } catch (e) { }
     }
 
     const files = (req as any).files;
@@ -31,32 +31,32 @@ const stepValidation = (req: Request, res: Response, next: any) => {
         validationRule["stepData.children"] = `required|string|in:${Object.values(Enum.CHILDREN_STATUS).join(',')}`;
     }
     else if (req.body.stepNumber == 2) {
+        validationRule["stepData.country"] = "required|string";
         validationRule["stepData.city"] = "required|string";
     }
     else if (req.body.stepNumber == 3) {
-        validationRule["stepData.interests"] = "required|array";
-        validationRule["stepData.hobbies"] = "required|array";
+        validationRule["stepData.interests"] = `required|array|in:${Object.values(Enum.INTRESTS).join(',')}`;
+        validationRule["stepData.hobbies"] = `required|array|in:${Object.values(Enum.HOBBIES).join(',')}`;
     }
     else if (req.body.stepNumber == 4) {
-        validationRule["stepData.handicap"] = "required|boolean";
+        validationRule["stepData.handicap"] = `required|string|in:${Object.values(Enum.HANDICAP).join(',')}`;
         validationRule["stepData.aboutYou"] = "required|string";
         validationRule["stepData.lookingForText"] = "required|string";
         validationRule["stepData.annualIncome"] = "required|numeric";
     }
     else if (req.body.stepNumber == 5) {
-        validationRule["stepData.ethnicity"] = "required|string";
-        validationRule["stepData.religion"] = "required|string";
+        validationRule["stepData.ethnicity"] = `required|string|in:${Object.values(Enum.ETHNICITY).join(',')}`;
     }
     else if (req.body.stepNumber == 6) {
         validationRule["stepData.horoscope"] = `required|string|in:${Object.values(Enum.HOROSCOPE).join(',')}`;
     }
     else if (req.body.stepNumber == 7) {
         validationRule["stepData.availableForHiring"] = "required|boolean";
-        validationRule["stepData.searchCategory"] = "required|array";
+        validationRule["stepData.category"] = `required|array|in:${Object.values(Enum.CATEGORY).join(',')}`;
         validationRule["stepData.availableDistance"] = "required|numeric";
     }
     else if (req.body.stepNumber == 8) {
-        validationRule["stepData.sexualOrientation"] = `required|string|in:${Object.values(Enum.SEXUAL_ORIENTATION).join(',')}`;
+        validationRule["stepData.sexualOrientation"] = `required|array|in:${Object.values(Enum.SEXUAL_ORIENTATION).join(',')}`;
     }
     else if (req.body.stepNumber == 9) {
         validationRule["stepData.photos"] = "required|array|min:3|max:6";
@@ -72,7 +72,14 @@ const stepValidation = (req: Request, res: Response, next: any) => {
         'in.stepData.children': `Wrong option! Allowed values are: ${Object.values(Enum.CHILDREN_STATUS).join(', ')}`,
         'in.stepData.horoscope': `Wrong option! Horoscope must be one of: ${Object.values(Enum.HOROSCOPE).join(', ')}`,
         'in.stepData.sexualOrientation': `Mismatch option! Orientation must be one of: ${Object.values(Enum.SEXUAL_ORIENTATION).join(', ')}`,
-        'in.stepData.whichOneAreYou': `Mismatch option! Persona must be one of: ${Object.values(Enum.PERSONA).join(', ')}`
+        'in.stepData.whichOneAreYou': `Mismatch option! Persona must be one of: ${Object.values(Enum.PERSONA).join(', ')}`,
+        'in.stepData.interests': `Mismatch option! Intrests must be one of:${Object.values(Enum.INTRESTS).join(',')} `,
+        'in.stepData.hobbies': `Mismatch option! Hobbies -> must be one of:${Object.values(Enum.HOBBIES).join(',')} `,
+        'in.stepData.handicap': `Mismatch option! handicap-> must be one of->: ${Object.values(Enum.HANDICAP).join(',')} `,
+       'in.stepData.ethnicity': `Mismatch option! ethnicity-> must be one of->: ${Object.values(Enum.ETHNICITY).join(',')} `,
+       'in.stepData.category': `Mismatch option! category-> must be one of->: ${Object.values(Enum.CATEGORY).join(',')} `,
+
+
     };
 
     commonUtils.validatorUtilWithCallback(req, res, next, validationRule, customMessages);

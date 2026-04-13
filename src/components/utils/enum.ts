@@ -1,4 +1,4 @@
-const Enum  = {
+const Enum = {
 
     STATUS: {
         ACTIVE: 1,
@@ -29,11 +29,6 @@ const Enum  = {
         ACTIVE: 1,
         BANNED: 0
     },
-    // ACCOUNT_VERIFIED_STATUS: {
-    //     PENDING: 0,
-    //     VERIFIED: 1,
-    //     REJECTED: 2
-    // },
 
     STEP_VERIFIED_STATUS: {
         SUCCESS: 1,
@@ -51,13 +46,10 @@ const Enum  = {
         PERSONAL: 2
     },
 
-
-    // APPOINTMENT_STATUS: {
-    //     UPCOMING: 6,
-    //     ONGOING: 5,
-    // ...
-    // }
-
+    ADULT: {
+        YES: 1,
+        NO: 0
+    },
     ROLE: {
         WOMEN: 'Women',
         MEN: 'Men',
@@ -107,6 +99,109 @@ const Enum  = {
         QUEER: "Queer",
         QUESTIONING: "Questioning",
         AROMANTIC: "Aromantic"
+    },
+
+    INTRESTS: {
+        Foodie: "Foodie Tour",
+        BROADWY: "Broadway",
+        FAISHION: "Fashion",
+        SOCIAL: "Social Development",
+        BOXING: "Boxing",
+        SAKE: "Sake",
+        CAFE: "Escape Cafe",
+        ENV_PROTECTION: "Environmental Protection",
+        REGGATON: "Reggaton",
+        MAKEUP: "Makeup",
+        SPORTS: "Motor Sports",
+        PILATES: "Pilates",
+        WERSTIING: "Wrestiing",
+        GAMES: "Online Game",
+        OUTING: "Working Out",
+        KOREAN_FOOD: "Korean Food",
+        DRAWIMG: "Drawing",
+        PICKNICK: "Picnicking",
+        MOTORCYCLE: "Motorcycles",
+        VLOGGING: "Vlogging",
+        DISNEY: "Disney",
+        PIMMS: "Pimms",
+        OTHER: "Other"
+    },
+
+    HOBBIES: {
+        TREVELING: "Traveling",
+        BUILDING: "Airplane Model Building",
+        ART: "Art",
+        BAKING: "Baking",
+        DANCE: "Dance",
+        ACTING: "Acting",
+        LEARNING: "Learning",
+        PHOTOGRAPHY: "Photography",
+        BOXING: "Boxing",
+        KNITTING: "Knitting",
+        WRITTING: "Writing",
+        GARDENING: "Gardening",
+        COOCKING: "Cooking",
+        OTHER: "Other"
+    },
+    HANDICAP: {
+        YES: "yes",
+        NO: "no"
+    },
+
+    ETHNICITY: {
+        AFRICAN: "African",
+        ASIAN: "Asian",
+        EUROPEAN: "European",
+        LATINO: "Hispanic/ Latino",
+        MID_EASTERN: "Middle Eastern",
+        AMERICAN: "Native American",
+        ISLAMDER: "Pacific Islander",
+        SOUTH_ASIAN: "South Asian",
+        CAUCASIAN: "Caucasian",
+        OTHER: "Other",
+    },
+
+    CATEGORY: {
+        WEDDING: 'Wedding',
+        BIRTHDAY: "Birthday",
+        PARTIES: "Parties",
+        CINEMA: 'Cinema',
+        CONCERT: 'Concert',
+        WALKING: 'Walking',
+        DINNER: 'Dinner',
+        COFFEE: "Coffee",
+        CULTURAL_EVENTS: "Cultural event",
+        EXHIBITION: 'Sports eventArt exhibition',
+        MUSEUM: 'Museum',
+        PARK: "Theme park",
+        FESTIVAL: "Festival",
+        ROAD_TRIP: "Road trip",
+        SHOPPING: "Shopping trip",
+        BEACH: "Beach or nature trip",
+        WINE: "Wine tasting events",
+        CHARITY: "Charity event",
+        ADVENTURE: "Adventure sports",
+        CLUB: "Book clubs or literary events",
+        COOKING: "Cooking or baking classes",
+        MEDIA: "Media ",
+        TECHNOLOGY_EXHIBITION: "Science or technology exhibitions",
+        SINGING_EVENTS: "Karaoke or singing events",
+        NIGHT_GAMING: "Board game nights",
+        TREVELING: 'Travel with me',
+        CULTURAL_FOODS: "Cultural food or drink events",
+        OTHER: "Other",
+    },
+    LIKE:{
+        LIKE:1,
+        UNLIKED:0
+    },
+    MATCHES:{
+        MATCH:1,
+        UNMATCH:0
+    },
+    VIEW:{
+        VIEW:1,
+        UNVIEW:0
     }
 
 }

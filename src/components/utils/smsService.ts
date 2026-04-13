@@ -14,4 +14,3 @@ const sendOtp = async (mobileNo:string, otp:number) => {
 };
 
 export default sendOtp
-// module.exports = sendOtp;

@@ -3,8 +3,6 @@ import appStrings from "../components/utils/appString";
 import config from "../../config/dev.json";
 // import redisClient from "../components/utils/redisClient";
 // const User = require("../components/user/model/userModel");
-import ENUM from "../components/utils/enum";
-import appString from "../components/utils/appString";
 
 import { Request, Response, NextFunction } from 'express';
 import jwt, { TokenExpiredError, JsonWebTokenError,SignOptions } from 'jsonwebtoken';
@@ -53,7 +51,6 @@ export function generateRefreshToken(payload:any,expiresIn:any=config.REFRESH_TO
 export async function verifyAcessToken(req: Request, res: Response, next: NextFunction) {
     try {
         console.log("verify acess token");
-        // Strict extraction requiring explicit Authorization Header natively
         let token = req.headers.authorization?.split(' ')[1];
         console.log("token==========",token);
 

@@ -1,16 +1,12 @@
 import userController from '../user/controller/userController'
 import SettingController from '../user/controller/settingController'
 import StepController from '../user/controller/stepController'
+import likeController from '../user/controller/likeController'
 import validation from './validation'
-import { verifyAcessToken } from '../../middelware/index';
+
 const upload = require("../../middelware/upload");
 
 const routeArray = [
-
-  //============= user =============//
-// ... (skipping some routes for brevity if needed? No wait, this replaces the whole file if I'm not careful. I'll just target the exact chunks)
-
-
   //============= user =============//
   {
     path: "/registerUser",
@@ -53,7 +49,7 @@ const routeArray = [
 
 
 
-  //===== steps create (setting Controller)
+  //===== steps create
 
       {
     path: "/createSteps",
@@ -69,5 +65,19 @@ const routeArray = [
     middleware: upload.any(),
     validation: validation.stepValidation,
   },
+
+  //======= matches
+      {
+    path: "/matches",
+    method: "post",
+    controller: likeController.like,
+  },
+
+
 ]
+
+
+
+
+
 export default routeArray
