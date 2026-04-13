@@ -53,8 +53,8 @@ export function generateRefreshToken(payload:any,expiresIn:any=config.REFRESH_TO
 export async function verifyAcessToken(req: Request, res: Response, next: NextFunction) {
     try {
         console.log("verify acess token");
-        // Using optional chaining to safely access cookies/headers
-        let token = req.headers.authorization?.split(' ')[1] || req.cookies?.accessToken;
+        // Strict extraction requiring explicit Authorization Header natively
+        let token = req.headers.authorization?.split(' ')[1];
         console.log("token==========",token);
 
         if (!token) {

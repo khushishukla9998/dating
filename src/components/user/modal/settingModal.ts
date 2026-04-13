@@ -83,16 +83,16 @@ export interface ISteps extends Document {
 
 
 const stepSchema: Schema<ISteps> = new Schema({
-     step1: { key: String, isRequired: Number,fields:Object },
-    step2: { key: String, isRequired: Number },
-    step3: { key: String, isRequired: Number },
-    step4: { key: String, isRequired: Number },
-    step5: { key: String, isRequired: Number },
-    step6: { key: String, isRequired: Number },
-    step7: { key: String, isRequired: Number },
-    step8: { key: String, isRequired: Number },
-    step9: { key: String, isRequired: Number },
-    step10: { key: String, isRequired: Number },
+    step1: { key: String, isRequired: Number, fields: Object },
+    step2: { key: String, isRequired: Number, fields: Object },
+    step3: { key: String, isRequired: Number, fields: Object },
+    step4: { key: String, isRequired: Number, fields: Object },
+    step5: { key: String, isRequired: Number, fields: Object },
+    step6: { key: String, isRequired: Number, fields: Object },
+    step7: { key: String, isRequired: Number, fields: Object },
+    step8: { key: String, isRequired: Number, fields: Object },
+    step9: { key: String, isRequired: Number, fields: Object },
+    step10: { key: String, isRequired: Number, fields: Object },
 }, { _id: false })
 
 export interface ISetting extends Document {

@@ -94,8 +94,8 @@ import appString from '../../utils/appString';
 import Enum from '../../utils/enum';
 
 interface IStep {
-    stepId: mongoose.Types.ObjectId;
-    data: any; 
+    step: number;
+    value: any; 
 }
 
 
@@ -159,11 +159,10 @@ const userSchema: Schema<IUser> = new Schema(
         },
     
         steps: [{
-            stepId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: appString.SETTING
+            step: {
+                type: Number
             },
-            data: {
+            value: {
                 type: mongoose.Schema.Types.Mixed
             }
         }]

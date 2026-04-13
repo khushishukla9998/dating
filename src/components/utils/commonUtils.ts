@@ -87,6 +87,19 @@ const routeArray = (array_: any[], prefix: any) => {
   return prefix;
 };
 
-export default { sendErrorResponse, sendSuccessResponse, storeAcessTokenInCookie, storeRefreshTokenInCookie, routeArray }
+const validatorUtilWithCallback = (req: Request, res: Response, next: any, rules: any, customMessages: any = {}) => {
+    const validation = new Validator(req.body, rules, customMessages);
+    validation.passes(() => next());
+    validation.fails(() => {
+        const errors = validation.errors.all();
+        const firstErrorKey = Object.keys(errors)[0];
+        if (!firstErrorKey) return sendErrorResponse(req, res, "Validation failed", null, 400);
+        
+        const firstErrorMessage = (errors as any)[firstErrorKey][0];
+        return sendErrorResponse(req, res, firstErrorMessage, null, 400);
+    });
+};
+
+export default { sendErrorResponse, sendSuccessResponse, storeAcessTokenInCookie, storeRefreshTokenInCookie, routeArray, validatorUtilWithCallback }
 
 

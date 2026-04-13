@@ -68,5 +68,13 @@ const appString = {
   INCORRECT_OLD_PASSWORD: "Old password is incorrect",
   PAASWORD_RESET_SUCCESS: "Password reset successfully",
   PASSWORD_RESET_FAILED: "Password reset failed",
+
+  // ================= STEPS ======================
+  STEP_NUMBER_REQUIRED: "stepNumber is required (e.g. 1 to 10)",
+  STEP_SETTING_NOT_FOUND: "Step setting not found",
+  STEP_RULES_MISSING: "Step rules configuration missing for ",
+  STEP_FIELD_REQUIRED: "Field is required: ",
+  STEP_UPDATED_SUCCESSFULLY: "Step updated successfully",
+  STEPS_CONFIG_UPDATED: "Steps updated",
 }
 export default appString

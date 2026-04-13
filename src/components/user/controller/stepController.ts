@@ -8,48 +8,46 @@ import mongoose from 'mongoose';
 
 export const fillStep = async (req: Request, res: Response) => {
   try {
-    const { userId, stepSettingId, stepData } = req.body;
+    const userId = req.userId || req.body.userId;
+    const { stepData, stepNumber } = req.body;
 
-    const settingRule = await Setting.findById(stepSettingId);
-    if (!settingRule) {
-      return res.status(404).json({ message: "Step setting not found" });
-    }
-
-
-const firstStepItem = settingRule.stepLevel?.ISteps?.[0]; 
-const stepKey = 'step1'; 
-const fieldsRules = firstStepItem?.[stepKey]?.fields || {};
-
-if (!fieldsRules || Object.keys(fieldsRules).length === 0) {
-    return res.status(404).json({ message: "Step rules configuration missing in database" });
-}
-    
-    for (const fieldKey in fieldsRules) {
-        if (fieldsRules[fieldKey].isRequired && !stepData[fieldKey]) {
-            return res.status(400).json({ message: `Field ${fieldKey} is required` });
-        }
+    if (!userId) {
+        return res.status(401).json({ message: "Unauthorized: User ID missing" });
     }
 
     const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) return res.status(404).json({ message: appStrings.USER_NOT_FOUND });
 
- const stepIndex = user.steps.findIndex(s => s.stepId.toString() === stepSettingId);
+    // Explicitly parse incoming multipart file boundaries
+    if (stepNumber == 9 && Array.isArray(stepData.photos)) {
+        stepData.photos = stepData.photos.map((file: any) => file.filename || file);
+    }
+
+    if (!user.steps) {
+        user.steps = [] as any;
+    }
+
+    const stepIndex = user.steps!.findIndex(s => s.step === Number(stepNumber));
 
     if (stepIndex > -1) {
-    user.steps[stepIndex].data = stepData;
+        const existingStep = user.steps![stepIndex];
+        if (existingStep) {
+            existingStep.value = stepData;
+            user.markModified(`steps.${stepIndex}.value`);
+        }
     } else {
-      user.steps.push({
-        stepId: new mongoose.Types.ObjectId(stepSettingId),
-        data: stepData
-      });
+        user.steps!.push({
+            step: Number(stepNumber),
+            value: stepData
+        } as any);
     }
 
     await user.save();
 
-    res.status(200).json({ message: "Step updated successfully", steps: user.steps });
+    res.status(200).json({ message: appStrings.STEP_UPDATED_SUCCESSFULLY, steps: user.steps });
 
    } catch (err:any) {
-          return commonUtils.sendErrorResponse(req, res, err.message, null, 500);
-      }
+        return commonUtils.sendErrorResponse(req, res, err.message, null, 500);
+   }
 };
      export default {fillStep}
