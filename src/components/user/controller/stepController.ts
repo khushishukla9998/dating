@@ -10,17 +10,17 @@ export const fillStep = async (req: Request, res: Response) => {
     const { stepData, stepNumber, settingiD } = req.body;
 
     if (!userId) {
-      return res.status(401).json({ message: "Unauthorized: User ID missing" });
+      return res.status(401).json({ message: appStrings.UNAUTHORIZED_USER_ID_MISSING });
     }
     if (!settingiD) {
-      return res.status(400).json({ message: "Setting ID missing in body" });
+      return res.status(400).json({ message: appStrings.SETTING_ID_MISSING });
     }
 
     const setting = await Setting.findById(settingiD);
     console.log("Setting found:", setting);
 
     if (!setting) {
-      return res.status(404).json({ message: "Setting not found" });
+      return res.status(404).json({ message: appStrings.SETTING_NOT_FOUND });
     }
 
 
@@ -33,14 +33,25 @@ console.log("Looking for key:", targetStepKey);
 
     if (!stepExists) {
       return res.status(400).json({
-        message: `Step ${stepNumber} is not allowed or does not exist in this setting.`
+        message: appStrings.STEP_NOT_ALLOWED
       });
     }
 
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: appStrings.USER_NOT_FOUND });
 
-
+    // Validate sequential step filling
+    const requestedStep = Number(stepNumber);
+    if (requestedStep > 1) {
+      const existingSteps = new Set((user.steps || []).map(s => s.step));
+      for (let i = 1; i < requestedStep; i++) {
+        if (!existingSteps.has(i)) {
+          return res.status(400).json({ 
+            message: appStrings.COMPLETE_PREVIOUS_STEP 
+          });
+        }
+      }
+    }
     if (stepNumber == 9 && Array.isArray(stepData.photos)) {
       stepData.photos = stepData.photos.map((file: any) => file.filename || file);
     }

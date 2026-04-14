@@ -24,6 +24,8 @@ export interface IUser extends Document {
     mobileOtpExpire: Date | null;
     currentStep:string;
     steps: mongoose.Types.Array<IStep>; 
+    panicMobileNumber?: string;
+    panicMessage?: string;
 }
 
 
@@ -80,7 +82,15 @@ const userSchema: Schema<IUser> = new Schema(
             }
              
         }, { _id: false }
-        ]
+        ],
+        panicMobileNumber: {
+            type: String,
+            default: null
+        },
+        panicMessage: {
+            type: String,
+            default: null
+        }
     },
     {
         timestamps: true

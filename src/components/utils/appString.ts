@@ -3,7 +3,7 @@ const appString = {
   //============== MODAL =======================
 
   USER: "User",
-  SETTING:"Setting",
+  SETTING: "Setting",
   //=============== DATABASE====================
 
   DATABASE_CONNECT: "Database is connected",
@@ -42,7 +42,7 @@ const appString = {
   DOCTOR_REGISTER: "Doctor register successfully",
   DOCTOR_REGISTET_FAILED: "Doctor register error",
   VERIFY_EMAIL_FIRST: "FIRST VERIFY YOUR EMAIL",
-    VERIFY_MOBILE_FIRST: "FIRST VERIFY YOUR MOBILE",
+  VERIFY_MOBILE_FIRST: "FIRST VERIFY YOUR MOBILE",
   DOCTOR_NOT_FOUND: "Doctor not Found",
   EMAIL_VERIFIED: "email is verified",
   EMAIL_OTP_REQUIRED: "email and OTP required",
@@ -50,20 +50,20 @@ const appString = {
   OTP_EXPIRED: " Your OTP is Expired ",
 
 
-  MOBILE_NOT_FOUND:"  Mobile No. is not found ",
+  MOBILE_NOT_FOUND: "  Mobile No. is not found ",
 
-    OTP_SENT_SUCCESS: "OTP sent successfully",
+  OTP_SENT_SUCCESS: "OTP sent successfully",
   OTP_SEND_FAILED: "OTP send failed",
-    MOBILE_VERIFIED: "mobile no. is verified",
+  MOBILE_VERIFIED: "mobile no. is verified",
   MOBILE_OTP_REQUIRED: "mobile no. and OTP required",
   MOBILE_NUMBER_REQUIRED: "mobile no. is required",
   WAIT_FOR_OTP_MOBILE: "please wait before rquesting new otp ",
   INVALID_MOBILE_FORMAT: "Invalid Indian mobile number format. Please provide a 10-digit number.",
   OTP_FAILED_CONTACT: "Failed to send OTP, please verify your phone number or contact support.",
 
-   PASSWORD_MISMATCH: "New password and Confirm password do not match!",
+  PASSWORD_MISMATCH: "New password and Confirm password do not match!",
   PASSWORD_MATCH: "New password should not be same as Old password",
-    OTP_NOT_VERFIFIED: " Otp not verified",
+  OTP_NOT_VERFIFIED: " Otp not verified",
   OTP_VERIFIED: "Youre OTP is verified",
   INCORRECT_OLD_PASSWORD: "Old password is incorrect",
   PAASWORD_RESET_SUCCESS: "Password reset successfully",
@@ -76,5 +76,24 @@ const appString = {
   STEP_FIELD_REQUIRED: "Field is required: ",
   STEP_UPDATED_SUCCESSFULLY: "Step updated successfully",
   STEPS_CONFIG_UPDATED: "Steps updated",
+  // ================= LIKES & MATCHES =================
+  INVALID_USER_ID: "Invalid user ID",
+  LIKED_USER_NOT_FOUND: "Liked user not found",
+  ACTION_PROCESSED_SUCCESSFULLY: "Action processed successfully",
+  MATCHES_FETCHED_SUCCESSFULLY: "Matches fetched successfully",
+
+  // ================= GENERAL / VALIDATION =================
+  ALL_FIELDS_REQUIRED: "All fields (including confirmPassword) are required",
+  EMAIL_PASSWORD_REQUIRED: "Email and Password required",
+  PASSWORDS_DO_NOT_MATCH: "Passwords do not match",
+  UNAUTHORIZED_USER_ID_MISSING: "Unauthorized: User ID missing",
+  SETTING_ID_MISSING: "Setting ID missing in body",
+  SETTING_NOT_FOUND: "Setting not found",
+  STEP_NOT_ALLOWED: "Step not allowed or does not exist in this setting.",
+  COMPLETE_PREVIOUS_STEP: "Please complete the previous step before proceeding.",
+
+  // ================= PROFILE =================
+  PROFILE_UPDATED_SUCCESSFULLY: "Profile updated successfully",
+  PROFILE_UPDATED_FAILED: "Profile update failed",
 }
 export default appString

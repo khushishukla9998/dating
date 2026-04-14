@@ -3,6 +3,7 @@ import SettingController from '../user/controller/settingController'
 import StepController from '../user/controller/stepController'
 import likeController from '../user/controller/likeController'
 import validation from './validation'
+import homeController from '../user/controller/homeController'
 
 const upload = require("../../middelware/upload");
 
@@ -47,7 +48,11 @@ const routeArray = [
     validation: validation.resetPasswordValidation,
   },
 
-
+  {
+    path: "/editProfile",
+    method: "post",
+    controller: userController.editProfile,
+  },
 
   //===== steps create
 
@@ -72,7 +77,11 @@ const routeArray = [
     method: "post",
     controller: likeController.like,
   },
-
+  {
+    path: "/homeScreen",
+    method: "post",
+    controller: homeController.homeScreen
+  }
 
 ]
 

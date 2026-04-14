@@ -49,13 +49,13 @@ const register = async (req: Request, res: Response) => {
     try {
         const { fullName, userName, email, mobileNo, DOb, password, confirmPassword } = req.body;
         if (!fullName || !userName || !email || !password || !DOb || !confirmPassword || !mobileNo) {
-            return commonUtils.sendErrorResponse(req, res, "All fields (including confirmPassword) are required", null, 400);
+            return commonUtils.sendErrorResponse(req, res, appStrings.ALL_FIELDS_REQUIRED, null, 400);
         }
         if (!email || !password) {
-            return commonUtils.sendErrorResponse(req, res, "Email and Password required", null, 400);
+            return commonUtils.sendErrorResponse(req, res, appStrings.EMAIL_PASSWORD_REQUIRED, null, 400);
         }
         if (confirmPassword !== password) {
-            return commonUtils.sendErrorResponse(req, res, "Passwords do not match", null, 400);
+            return commonUtils.sendErrorResponse(req, res, appStrings.PASSWORDS_DO_NOT_MATCH, null, 400);
         }
 
         const emailInUse = await User.findOne({ email });
@@ -373,4 +373,45 @@ const resetPassword = async (req:Request, res:Response) => {
     return commonUtils.sendErrorResponse(req, res, appString.PASSWORD_RESET_FAILED, { error: err.message }, 500);
   }
 };
-export default { register, userLogin, verifyEmailOtp,resetPassword ,fotgotPassword};
+//====================== EDIT PROFILE ==========================//
+
+const editProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = req.userId || req.body.userId || req.headers.decode;
+    if (!userId) {
+      return commonUtils.sendErrorResponse(req, res, appString.UNAUTHORIZED_USER_ID_MISSING, null, 401);
+    }
+
+    const { panicMobileNumber, panicMessage, fullName, userName, DOb } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return commonUtils.sendErrorResponse(req, res, appString.USER_NOT_FOUND, null, 404);
+    }
+
+    if (panicMobileNumber !== undefined) {
+      // Could normalize here if we wanted strictly Indian numbers, but panic number might be any format
+      user.panicMobileNumber = panicMobileNumber;
+    }
+    if (panicMessage !== undefined) {
+      user.panicMessage = panicMessage;
+    }
+    if (fullName !== undefined) user.fullName = fullName;
+    if (userName !== undefined) user.userName = userName;
+    if (DOb !== undefined) user.DOb = DOb;
+
+    await user.save();
+
+    return commonUtils.sendSuccessResponse(req, res, appString.PROFILE_UPDATED_SUCCESSFULLY, {
+      panicMobileNumber: user.panicMobileNumber,
+      panicMessage: user.panicMessage,
+      fullName: user.fullName,
+      userName: user.userName,
+      DOb: user.DOb
+    });
+  } catch (err: any) {
+    return commonUtils.sendErrorResponse(req, res, appString.PROFILE_UPDATED_FAILED, { error: err.message }, 500);
+  }
+};
+
+export default { register, userLogin, verifyEmailOtp, resetPassword, fotgotPassword, editProfile };
