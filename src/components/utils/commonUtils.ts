@@ -88,18 +88,44 @@ const routeArray = (array_: any[], prefix: any) => {
 };
 
 const validatorUtilWithCallback = (req: Request, res: Response, next: any, rules: any, customMessages: any = {}) => {
-    const validation = new Validator(req.body, rules, customMessages);
-    validation.passes(() => next());
-    validation.fails(() => {
-        const errors = validation.errors.all();
-        const firstErrorKey = Object.keys(errors)[0];
-        if (!firstErrorKey) return sendErrorResponse(req, res, "Validation failed", null, 400);
-        
-        const firstErrorMessage = (errors as any)[firstErrorKey][0];
-        return sendErrorResponse(req, res, firstErrorMessage, null, 400);
-    });
+  const validation = new Validator(req.body, rules, customMessages);
+  validation.passes(() => next());
+  validation.fails(() => {
+    const errors = validation.errors.all();
+    const firstErrorKey = Object.keys(errors)[0];
+    if (!firstErrorKey) return sendErrorResponse(req, res, "Validation failed", null, 400);
+
+    const firstErrorMessage = (errors as any)[firstErrorKey][0];
+    return sendErrorResponse(req, res, firstErrorMessage, null, 400);
+  });
 };
 
-export default { sendErrorResponse, sendSuccessResponse, storeAcessTokenInCookie, storeRefreshTokenInCookie, routeArray, validatorUtilWithCallback }
+
+
+//================ function for thumbnail =================//
+// import ffmpeg from 'fluent-ffmpeg';
+const ffmpeg = require('fluent-ffmpeg');
+
+import path from 'path'
+
+const generateThumbnail = (videoPath: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const filename = `thumb-${Date.now()}.png`;
+    const folder = path.dirname(videoPath)
+    ffmpeg(videoPath)
+      .screenshots({
+        count: 1,
+        filename: filename,
+        folder,
+        size: '320x240'
+      })
+      .on('end', () => resolve(filename))
+      .on('error', (err:any) => reject(err));
+  });
+};
+export default {
+  sendErrorResponse, sendSuccessResponse, storeAcessTokenInCookie,
+  storeRefreshTokenInCookie, routeArray, validatorUtilWithCallback, generateThumbnail
+}
 
 

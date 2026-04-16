@@ -5,27 +5,28 @@ import Enum from '../../utils/enum';
 
 interface IStep {
     step: number;
-    value: any; 
+    value: any;
 }
 
 export interface IUser extends Document {
     fullName: string;
     userName: string;
     email: string;
-    mobileNo: string; 
-    DOb?: Date;   
+    mobileNo: string;
+    DOb?: Date;
     password: string;
     isMobileVerified: number;
     isEmailVarified: number;
     isDeleted: number;
     emailOtp: number | null;
     emailOtpExpire: Date | null;
-    mobileOtp: number ;
+    mobileOtp: number;
     mobileOtpExpire: Date | null;
-    currentStep:string;
-    steps: mongoose.Types.Array<IStep>; 
+    currentStep: string;
+    steps: mongoose.Types.Array<IStep>;
     panicMobileNumber?: string;
     panicMessage?: string;
+    points:number;
 }
 
 
@@ -34,7 +35,7 @@ const userSchema: Schema<IUser> = new Schema(
         fullName: { type: String, required: true },
         userName: { type: String, required: true },
         email: { type: String, required: true, unique: true },
-        mobileNo: { type: String, required: true }, 
+        mobileNo: { type: String, required: true },
         DOb: { type: Date },
         password: { type: String, required: true },
 
@@ -69,10 +70,10 @@ const userSchema: Schema<IUser> = new Schema(
             type: Date,
             default: null
         },
-    currentStep:{
-        type:"string"
-    },
-    
+        currentStep: {
+            type: "string"
+        },
+
         steps: [{
             step: {
                 type: Number
@@ -80,7 +81,7 @@ const userSchema: Schema<IUser> = new Schema(
             value: {
                 type: mongoose.Schema.Types.Mixed
             }
-             
+
         }, { _id: false }
         ],
         panicMobileNumber: {
@@ -90,6 +91,9 @@ const userSchema: Schema<IUser> = new Schema(
         panicMessage: {
             type: String,
             default: null
+        },
+        points:{
+            type:Number
         }
     },
     {

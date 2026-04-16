@@ -4,6 +4,7 @@ import StepController from '../user/controller/stepController'
 import likeController from '../user/controller/likeController'
 import validation from './validation'
 import homeController from '../user/controller/homeController'
+import postEntertainmentVideo from '../user/controller/entertainmentController'
 
 const upload = require("../../middelware/upload");
 
@@ -50,7 +51,7 @@ const routeArray = [
 
   {
     path: "/editProfile",
-    method: "post",
+    method: "put",
     controller: userController.editProfile,
   },
 
@@ -67,7 +68,7 @@ const routeArray = [
     path: "/fillSteps",
     method: "post",
     controller: StepController.fillStep,
-    middleware: upload.any(),
+    middleware: upload.array("images",10),
     validation: validation.stepValidation,
   },
 
@@ -79,10 +80,40 @@ const routeArray = [
   },
   {
     path: "/homeScreen",
-    method: "post",
+    method: "get",
     controller: homeController.homeScreen
-  }
+  },,
 
+  {
+    path: "/likeData",
+    method: "get",
+    controller:likeController.getdetails
+  },
+
+    {
+    path: "/scheduleDate",
+    method: "post",
+    controller:likeController.createSchedule
+  },
+
+   {
+    path: "/dateResponse",
+    method: "put",
+    controller:likeController.handleScheduleRequest
+  },
+
+     {
+    path: "/rating",
+    method: "put",
+    controller:likeController.rating
+  },
+
+     {
+    path: "/postVedio",
+    method: "post",
+      middleware: upload.single("video"),
+    controller:postEntertainmentVideo.postEntertainmentVideo
+  },
 ]
 
 

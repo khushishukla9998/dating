@@ -18,120 +18,130 @@ const HOROSCOPE_COMPATIBILITY: Record<string, string[]> = {
     [Enum.HOROSCOPE.AQUARIUS]: [Enum.HOROSCOPE.GEMINI, Enum.HOROSCOPE.LIBRA],
     [Enum.HOROSCOPE.PISCES]: [Enum.HOROSCOPE.CANCER, Enum.HOROSCOPE.SCORPIO]
 };
-
 const homeScreen = async (req: Request, res: Response) => {
     try {
         const userId = req.userId || req.body.userId;
-        
         if (!userId) {
             return commonUtils.sendErrorResponse(req, res, appStrings.INVALID_USER_ID, null, 400);
         }
-
         const user = await User.findById(userId).lean();
         if (!user) {
             return commonUtils.sendErrorResponse(req, res, appStrings.USER_NOT_FOUND, null, 404);
         }
-
         let persona, handicap, myGender, lookForGender, relationship, horoscope, availableForHiring, country, city;
         let hobbies: string[] = [];
         let interests: string[] = [];
 
-        // Extract user preferences based on filled steps
-        for (const s of user.steps || []) {
-            if (s.step === 1 && s.value) {
-                myGender = s.value.role;
-                lookForGender = s.value.lookingFor;
-                // Ignored relationship for now or you can keep it mapping exactly
-                relationship = s.value.relationshipStatus;
-            }
-            if (s.step === 2 && s.value) {
-                country = s.value.country;
-                city = s.value.city;
-            }
-            if (s.step === 3 && s.value) {
-                hobbies = s.value.hobbies || [];
-                interests = s.value.interests || [];
-            }
-            if (s.step === 4 && s.value) handicap = s.value.handicap;
-            if (s.step === 6 && s.value) horoscope = s.value.horoscope;
-            if (s.step === 7 && s.value) availableForHiring = s.value.availableForHiring;
-            if (s.step === 10 && s.value) persona = s.value.whichOneAreYou;
-        }
+  
+            for (const s of user.steps || []) {
+                if (!s?.value) continue;
 
-        const conditions: any[] = [
-            { _id: { $ne: user._id } }
-        ];
+                if (s.step === 1) {
+                    myGender = s.value.role;
+                    lookForGender = s.value.lookingFor;
+                    relationship = s.value.relationshipStatus;
+                }
+                if (s.step === 2) {
+                    country = s.value.country;
+                    city = s.value.city;
+                }
+                if (s.step === 3) {
+                    hobbies = s.value.hobbies || [];
+                    interests = s.value.interests || [];
+                }
+                if (s.step === 4) handicap = s.value.handicap;
+                if (s.step === 6) horoscope = s.value.horoscope;
+                if (s.step === 7) availableForHiring = s.value.availableForHiring;
+                if (s.step === 10) persona = s.value.whichOneAreYou;
+            }
 
-        // 1. Demon gets Demon, Angel gets Angel
-        if (persona) {
-            conditions.push({
-                steps: { $elemMatch: { step: 10, "value.whichOneAreYou": persona } }
+            const conditions: any[] = [];
+            conditions.push({ _id: { $ne: user._id } });
+
+            if (myGender || lookForGender) {
+                const step1Query: any = { step: 1 };
+
+                console.log("step1Query", step1Query)
+
+                if (lookForGender) step1Query["value.role"] = lookForGender;
+                if (myGender) step1Query["value.lookingFor"] = myGender;
+
+                conditions.push({ steps: { $elemMatch: step1Query } });
+            }
+            if (hobbies.length > 0 || interests.length > 0) {
+                const step3Query: any = { step: 3 };
+
+                if (hobbies.length > 0) {
+                    step3Query["value.hobbies"] = { $in: hobbies };
+                }
+                if (interests.length > 0) {
+                    step3Query["value.interests"] = { $in: interests };
+                }
+                conditions.push({ steps: { $elemMatch: step3Query } });
+            }
+
+
+            if (handicap) {
+                conditions.push({
+                    steps: { $elemMatch: { step: 4, "value.handicap": handicap } }
+                });
+            }
+            if (horoscope && HOROSCOPE_COMPATIBILITY[horoscope]) {
+                const compatibleSigns = HOROSCOPE_COMPATIBILITY[horoscope];
+
+                conditions.push({
+                    steps: {
+                        $elemMatch: {
+                            step: 6,
+                            "value.horoscope": { $in: compatibleSigns }
+                        }
+                    }
+                });
+            }
+            if (persona) {
+                conditions.push({
+                    steps: {
+                        $elemMatch: {
+                            step: 10,
+                            "value.whichOneAreYou": persona
+                        }
+                    }
+                });
+            }
+         
+            let matchesQuery :any;
+            if(conditions.length === 0){
+                matchesQuery = {_id:{$ne:user._id}}
+            }
+            else{
+                matchesQuery ={
+                    _id:{$ne:user._id},
+                    $and:conditions
+                };
+            }
+
+            console.log("Final Query:", JSON.stringify(matchesQuery, null, 2));
+            const matches = await User.find(matchesQuery).select("fullName userName dob steps").lean();
+            console.log("matches", matches);
+            console.log("length", matches.length);
+            const formattedMatches = matches.map((m) => {
+                let age = null;
+                if (m.DOb) {
+                    const diff = Date.now() - new Date(m.DOb).getTime();
+                    age = Math.abs(new Date(diff).getUTCFullYear() - 1970);
+                }
+                return {
+                    _id: m._id,
+                    fullName: m.fullName,
+                    userName: m.userName,
+                    age: age,
+                    steps: m.steps
+                };
             });
-        }
-
-        // 2. Handicap gets other handicap people
-        if (handicap) {
-            conditions.push({
-                steps: { $elemMatch: { step: 4, "value.handicap": handicap } }
-            });
-        }
-
-        // 3 & 4. Cross-gender matching
-        if (myGender || lookForGender) {
-            const step1Query: any = { step: 1 };
-            if (lookForGender) step1Query["value.role"] = lookForGender;
-            if (myGender) step1Query["value.lookingFor"] = myGender;
-            conditions.push({ steps: { $elemMatch: step1Query } });
-        }
-
-        // 5. Hobbies and interests should match at least one
-        if (hobbies.length > 0) {
-            conditions.push({ steps: { $elemMatch: { step: 3, "value.hobbies": { $in: hobbies } } } });
-        }
-        if (interests.length > 0) {
-            conditions.push({ steps: { $elemMatch: { step: 3, "value.interests": { $in: interests } } } });
-        }
-
-        // 6. Horoscope compatibility
-        if (horoscope && HOROSCOPE_COMPATIBILITY[horoscope]) {
-            const compatibleSigns = HOROSCOPE_COMPATIBILITY[horoscope];
-            conditions.push({
-                steps: { $elemMatch: { step: 6, "value.horoscope": { $in: compatibleSigns } } }
-            });
-        }
-
-        // 7. Hiring logic 
-        // (Location filtering removed: country can be anywhere)
-        if (availableForHiring) {
-            // Add any other specific hiring logic here if needed
-            // Currently, no location constraints apply.
-        }
-
-        // Find matches and select required fields
-        const matchesQuery = conditions.length > 1 ? { $and: conditions } : conditions[0];
-        const matches = await User.find(matchesQuery).select("fullName userName DOb steps").lean();
-
-        // Format to show age, name, and basic details
-        const formattedMatches = matches.map(m => {
-            let age = null;
-            if (m.DOb) {
-                const diff = Date.now() - new Date(m.DOb).getTime();
-                age = Math.abs(new Date(diff).getUTCFullYear() - 1970);
-            }
-            return {
-                _id: m._id,
-                fullName: m.fullName,
-                userName: m.userName,
-                age: age,
-                steps: m.steps // basic details stored in steps
-            };
-        });
-
-        return commonUtils.sendSuccessResponse(req, res, appStrings.MATCHES_FETCHED_SUCCESSFULLY, formattedMatches);
-
+            return commonUtils.sendSuccessResponse(req, res, appStrings.MATCHES_FETCHED_SUCCESSFULLY, formattedMatches);
+    
     } catch (err: any) {
         return commonUtils.sendErrorResponse(req, res, err.message, null, 500);
     }
 };
-
 export default { homeScreen };

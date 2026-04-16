@@ -95,5 +95,14 @@ const appString = {
   // ================= PROFILE =================
   PROFILE_UPDATED_SUCCESSFULLY: "Profile updated successfully",
   PROFILE_UPDATED_FAILED: "Profile update failed",
+DATA_NOT_FOUND:"still you have not any data about likes , views and matches , No one acts on your profile yet ",
+NO_LIKES_FOUND:'you have not any likes yet ',
+NO_VIEW_FOUNDl:"No one has viewed your profile yet.",
+LIKE_DATA:"DATA FETCHED",
+NO_MATCHES_FOUND:"No matches found yet.",
+
+SCHEDULE_ID_NOT_FOUND:"Schedule not found or you are not authorized to update it.",
+SCHEDULE_UPDATED :"Schedule updated",
+NOT_DATED:"YOU HAVE NOT DATED to eachOther without dating you can not rating !!"
 }
 export default appString

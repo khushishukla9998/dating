@@ -8,6 +8,7 @@ import { Request, Response } from 'express';
 import Enum from "../../utils/enum";
 import sendVerificationEmail from "../../utils/emailService";
 import sendOtp from "../../utils/smsService";
+import smsService from "../../utils/smsService";
 
 
 
@@ -20,14 +21,11 @@ function normalizeIndianMobile(mobileNo: Number) {
     }
 
     let str = mobileNo.toString().trim();
-    // Strip all non-digits
     str = str.replace(/\D/g, "");
-    // Handle common Indian prefixes
     if (str.length === 12 && str.startsWith("91")) {
         str = str.slice(2);
     } else if (str.length === 13 && str.startsWith("0")) {
-        // Some might use 091...
-        str = str.slice(3);
+ str = str.slice(3);
     } else if (str.length === 11 && str.startsWith("0")) {
         str = str.slice(1);
     }
@@ -119,7 +117,7 @@ const register = async (req: Request, res: Response) => {
         if (formattedMobileForSms && newUser.mobileNo) {
             try {
                 console.log("Sending OTP to:", formattedMobileForSms, "otp:", newUser.mobileOtp);
-                await sendOtp(formattedMobileForSms, newUser.mobileOtp);
+                await smsService.sendOtp(formattedMobileForSms, newUser.mobileOtp);
             } catch (e) {
                 console.error("Error sending OTP via Twilio:", e);
                 return commonUtils.sendErrorResponse(
@@ -382,15 +380,15 @@ const editProfile = async (req: Request, res: Response) => {
       return commonUtils.sendErrorResponse(req, res, appString.UNAUTHORIZED_USER_ID_MISSING, null, 401);
     }
 
-    const { panicMobileNumber, panicMessage, fullName, userName, DOb } = req.body;
+    const { panicMobileNumber, panicMessage, fullName, userName, DOb} = req.body;
 
-    const user = await User.findById(userId);
+    const user = await User.findByIdAndUpdate(userId);
     if (!user) {
       return commonUtils.sendErrorResponse(req, res, appString.USER_NOT_FOUND, null, 404);
     }
 
     if (panicMobileNumber !== undefined) {
-      // Could normalize here if we wanted strictly Indian numbers, but panic number might be any format
+
       user.panicMobileNumber = panicMobileNumber;
     }
     if (panicMessage !== undefined) {

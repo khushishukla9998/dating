@@ -40,7 +40,7 @@ console.log("Looking for key:", targetStepKey);
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: appStrings.USER_NOT_FOUND });
 
-    // Validate sequential step filling
+  
     const requestedStep = Number(stepNumber);
     if (requestedStep > 1) {
       const existingSteps = new Set((user.steps || []).map(s => s.step));

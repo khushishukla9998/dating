@@ -4,13 +4,12 @@ import { Request, Response } from 'express';
 import Setting from "../modal/settingModal";
 
 const createStep = async (req: Request, res: Response) => {
+
     try {
         let { stepLevel } = req.body;
 
         if (!stepLevel || (Array.isArray(stepLevel) && stepLevel.length === 0)) {
-
         }
-
         let setting = await Setting.findOne();
         if (setting) {
             setting.stepLevel = stepLevel;
@@ -24,7 +23,5 @@ const createStep = async (req: Request, res: Response) => {
         return commonUtils.sendErrorResponse(req, res, err.message, null, 500);
     }
 };
-
-
 
 export default {createStep};

@@ -191,17 +191,29 @@ const Enum = {
         CULTURAL_FOODS: "Cultural food or drink events",
         OTHER: "Other",
     },
-    LIKE:{
-        LIKE:1,
-        UNLIKED:0
+    LIKE: {
+        LIKE: 1,
+        UNLIKED: 0
     },
-    MATCHES:{
-        MATCH:1,
-        UNMATCH:0
+    MATCHES: {
+        MATCH: 1,
+        UNMATCH: 0
     },
-    VIEW:{
-        VIEW:1,
-        UNVIEW:0
+    VIEW: {
+        VIEW: 1,
+        UNVIEW: 0
+    },
+    PANIC_MODE: {
+        ON: 1,
+        OFF: 0
+    },
+    RESPONSE: {
+        ACCEPT: 1,
+        REJECT: 0
+    },
+    RATING_STATUS:{
+        COMPLETED:1,
+        NOT_COMPLETED:0
     }
 
 }

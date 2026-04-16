@@ -4,7 +4,7 @@ import appString from '../../utils/appString';
 import Enum from '../../utils/enum';
 
 export interface ILike extends Document {
-    userId: mongoose.Types.ObjectId;
+    likedByUser: mongoose.Types.ObjectId;
     likedUserId: mongoose.Types.ObjectId;
     like: number;
     view: number;
@@ -13,7 +13,7 @@ export interface ILike extends Document {
 
 const likeSchema: Schema<ILike> = new Schema(
     {
-        userId: {
+        likedByUser: {
             type: Schema.Types.ObjectId,
             ref: "User",
            
@@ -43,6 +43,7 @@ const likeSchema: Schema<ILike> = new Schema(
     },
     { timestamps: true }
 );
+
 
 const LikeModel: Model<ILike> = mongoose.model<ILike>('Like', likeSchema);
 export default LikeModel;
